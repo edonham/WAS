@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Retro 8-bit Game</title>
+    <script>
+      var canvas;
+      var ctx;
+      var x = 50;
+      var y = 50;
+      var xSpeed = 0;
+      var ySpeed = 0;
+      var laserActive = false;
+      var laserX;
+      var laserY;
+
+      function init() {
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext("2d");
+        setInterval(draw, 10);
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(x, y, 20, 20);
+        
+        if(laserActive) {
+          ctx.fillStyle = "blue";
+          ctx.fillRect(laserX, laserY, 5, 20);
+          laserY -= 10;
+          if(laserY < 0) {
+            laserActive = false;
+          }
+        }
+        
+        x += xSpeed;
+        y += ySpeed;
+        if (x > canvas.width || x < 0) {
+          xSpeed = 0;
+        }
+        if (y > canvas.height || y < 0) {
+          ySpeed = 0;
+        }
+      }
+      
+      function keyDownHandler(e) {
+        if(e.keyCode == 39) {
+          xSpeed = 5;
+        }
+        else if(e.keyCode == 37) {
+          xSpeed = -5;
+        }
+        else if(e.keyCode == 38) {
+          ySpeed = -5;
+        }
+        else if(e.keyCode == 40) {
+          ySpeed = 5;
+        }
+        else if(e.keyCode == 32) {
+          laserActive = true;
+          laserX = x + 7;
+          laserY = y;
+        }
+      }
+      
+      function keyUpHandler(e) {
+        if(e.keyCode == 39) {
+          xSpeed = 0;
+        }
+        else if(e.keyCode == 37) {
+          xSpeed = 0;
+        }
+        else if(e.keyCode == 38) {
+          ySpeed = 0;
+        }
+        else if(e.keyCode == 40) {
+          ySpeed = 0;
+        }
+      }
+    </script>
+  </head>
+  <body onload="init()">
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+  </body>
+</html>
